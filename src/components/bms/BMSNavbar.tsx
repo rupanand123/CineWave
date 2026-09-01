@@ -70,7 +70,7 @@ export function BMSNavbar({
               <div>
                 <div className="flex items-center space-x-1">
                   <span className="text-xl font-black tracking-tight text-white font-sans">
-                    book<span className="text-rose-500">my</span>show
+                    Cine<span className="text-rose-500">Wave</span>
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-400 font-medium tracking-wide">

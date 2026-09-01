@@ -1,6 +1,6 @@
-# BookMyShow - Movies, Events & Entertainment Booking Platform
+# CineWave - Movies, Events & Entertainment Booking Platform
 
-A high-performance entertainment ticketing and cinema booking web platform inspired by BookMyShow. Built with React 19, TypeScript, Tailwind CSS, Motion, and Firebase.
+A high-performance entertainment ticketing and cinema booking web platform. Built with React 19, TypeScript, Tailwind CSS, Motion, and Firebase.
 
 ---
 

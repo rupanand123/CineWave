@@ -539,10 +539,10 @@ export default function App() {
               </div>
               <div>
                 <span className="text-base font-black tracking-tight text-white">
-                  book<span className="text-rose-500">my</span>show
+                  Cine<span className="text-rose-500">Wave</span>
                 </span>
                 <p className="text-[11px] text-slate-500">
-                  Global Movie & Entertainment Ticketing Engine
+                  Global Movie & Entertainment Ticketing Platform
                 </p>
               </div>
             </div>
@@ -565,7 +565,7 @@ export default function App() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
-            <p>© 2026 Bigtree Entertainment Pvt. Ltd. All Rights Reserved.</p>
+            <p>© 2026 CineWave Entertainment Inc. All Rights Reserved.</p>
             <div className="flex items-center space-x-4">
               <span>Privacy Policy</span>
               <span>•</span>

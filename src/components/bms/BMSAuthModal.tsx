@@ -271,7 +271,7 @@ export function BMSAuthModal({
             </div>
             <div>
               <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-1.5">
-                book<span className="text-rose-500">my</span>show
+                Cine<span className="text-rose-500">Wave</span>
                 <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30">
                   Passport
                 </span>

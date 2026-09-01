@@ -53,7 +53,7 @@ interface BMSCinematicIntroPageProps {
 const BACKDROP_MOVIES = BMS_MOVIES.slice(0, 6);
 
 const CINEMA_QUOTES = [
-  { quote: "Every ticket tells a story.", author: "BookMyShow Experiences" },
+  { quote: "Every ticket tells a story.", author: "CineWave Experiences" },
   { quote: "Cinema is the most beautiful fraud in the world.", author: "Jean-Luc Godard" },
   { quote: "Experience the magic of 70mm, Dolby Atmos & IMAX.", author: "PVR INOX & Cinepolis" },
   { quote: "Big Screen. Epic Sound. Unforgettable Memories.", author: "CineWave Premiere" }
@@ -416,7 +416,7 @@ export function BMSCinematicIntroPage({
           </div>
           <div>
             <span className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
-              book<span className="text-rose-500">my</span>show
+              Cine<span className="text-rose-500">Wave</span>
               <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm">
                 Premiere
               </span>
@@ -562,7 +562,7 @@ export function BMSCinematicIntroPage({
                       <Film className="w-4 h-4" />
                     </div>
                     <div>
-                      <h2 className="text-base font-black text-white">Sign In to BookMyShow</h2>
+                      <h2 className="text-base font-black text-white">Sign In to CineWave</h2>
                       <p className="text-[11px] text-slate-400">Unlock VIP perks & instant M-Tickets</p>
                     </div>
                   </div>

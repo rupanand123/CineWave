@@ -132,7 +132,7 @@ export function BMSUserProfileModal({
                   SuperStar VIP
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">{userProfile.email || userProfile.phoneNumber || 'BookMyShow Member'}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{userProfile.email || userProfile.phoneNumber || 'CineWave Member'}</p>
             </div>
           </div>
 

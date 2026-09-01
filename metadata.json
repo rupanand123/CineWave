@@ -1,6 +1,6 @@
 {
-  "name": "BookMyShow - Movies, Events & Entertainment Booking Engine",
-  "description": "Next-generation BookMyShow movie and live events booking platform featuring interactive seat layouts, real-time ticket hold locking, showtime matrices, F&B concessions, digital M-Tickets, and high-concurrency architecture.",
+  "name": "CineWave - Movies, Events & Entertainment Booking Platform",
+  "description": "Next-generation CineWave movie and live events booking platform featuring interactive seat layouts, real-time ticket hold locking, showtime matrices, F&B concessions, digital M-Tickets, and high-concurrency architecture.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
