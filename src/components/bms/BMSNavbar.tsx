@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CityData } from '../../data/bmsData';
 import { BMSUserProfile, WatchlistMovie } from '../../lib/firebase';
 import {
@@ -9,6 +9,7 @@ import {
   Ticket,
   Tv,
   Calendar,
+  Clock,
   Theater,
   Trophy,
   Flame,
@@ -51,6 +52,28 @@ export function BMSNavbar({
   onOpenCinematicIntro
 }: BMSNavbarProps) {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [currentDateTime, setCurrentDateTime] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formattedDate = currentDateTime.toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+
+  const formattedTime = currentDateTime.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  });
 
   return (
     <header className="sticky top-0 z-40 bg-[#0B0F19]/95 backdrop-blur-md border-b border-slate-800 shadow-xl transition-all">
@@ -257,14 +280,37 @@ export function BMSNavbar({
               </button>
             </div>
 
-            {/* Quick Offers / Offers banner link */}
-            <div className="hidden md:flex items-center space-x-3 text-xs text-slate-400">
+            {/* Right Side: Live Date & Time + Offers banner */}
+            <div className="hidden lg:flex items-center space-x-3 text-xs">
+              {/* Live Real-time Clock & Date Pill */}
+              <div
+                id="cnewave-live-datetime-pill"
+                className="flex items-center space-x-2 px-3 py-1 rounded-xl bg-[#141B2D] border border-slate-700/80 text-[11px] font-medium shadow-sm hover:border-slate-600 transition-all"
+                title="Current Real-Time Live Clock"
+              >
+                <div className="flex items-center space-x-1.5 text-slate-300 font-semibold">
+                  <Calendar className="w-3.5 h-3.5 text-rose-400" />
+                  <span>{formattedDate}</span>
+                </div>
+                <span className="text-slate-600">•</span>
+                <div className="flex items-center space-x-1.5 text-amber-300 font-mono font-bold">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <Clock className="w-3 h-3 text-amber-400" />
+                  <span>{formattedTime}</span>
+                </div>
+              </div>
+
+              <span className="text-slate-700">|</span>
+
               <span className="flex items-center space-x-1 text-amber-400">
                 <Flame className="w-3.5 h-3.5" />
-                <span className="font-semibold">Offer: 50% Off with Code BMS50</span>
+                <span className="font-semibold">Code BMS50 (50% Off)</span>
               </span>
               <span>•</span>
-              <span className="text-emerald-400 font-medium">Free Cancellation on All Tickets</span>
+              <span className="text-emerald-400 font-medium">Free Cancellation</span>
             </div>
           </div>
         </div>

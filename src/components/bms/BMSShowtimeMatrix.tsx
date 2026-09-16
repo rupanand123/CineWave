@@ -28,15 +28,39 @@ export function BMSShowtimeMatrix({
   onBackToMovies,
   onSelectShowtime
 }: BMSShowtimeMatrixProps) {
-  // Generate next 6 dates
-  const dates = [
-    { label: 'TODAY', day: '31', month: 'AUG', fullDate: 'Sun, 31 Aug 2026' },
-    { label: 'TOMORROW', day: '01', month: 'SEP', fullDate: 'Mon, 01 Sep 2026' },
-    { label: 'TUE', day: '02', month: 'SEP', fullDate: 'Tue, 02 Sep 2026' },
-    { label: 'WED', day: '03', month: 'SEP', fullDate: 'Wed, 03 Sep 2026' },
-    { label: 'THU', day: '04', month: 'SEP', fullDate: 'Thu, 04 Sep 2026' },
-    { label: 'FRI', day: '05', month: 'SEP', fullDate: 'Fri, 05 Sep 2026' }
-  ];
+  // Generate dynamically next 7 days based on exact real current date
+  const dates = React.useMemo(() => {
+    const list = [];
+    const now = new Date();
+    const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const fullDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const fullMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(now);
+      d.setDate(now.getDate() + i);
+
+      const dayNum = String(d.getDate()).padStart(2, '0');
+      const monthStr = months[d.getMonth()];
+      const dayName = daysOfWeek[d.getDay()];
+      const fullDayName = fullDays[d.getDay()];
+      const fullMonthName = fullMonths[d.getMonth()];
+      const year = d.getFullYear();
+
+      let label = dayName;
+      if (i === 0) label = 'TODAY';
+      else if (i === 1) label = 'TOMORROW';
+
+      list.push({
+        label,
+        day: dayNum,
+        month: monthStr,
+        fullDate: `${fullDayName}, ${dayNum} ${fullMonthName} ${year}`
+      });
+    }
+    return list;
+  }, []);
 
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [selectedTimeFilter, setSelectedTimeFilter] = useState<'ALL' | 'MORNING' | 'AFTERNOON' | 'EVENING' | 'NIGHT'>('ALL');

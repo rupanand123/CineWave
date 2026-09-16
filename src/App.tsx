@@ -420,12 +420,14 @@ export default function App() {
       {/* 2. Movie Detail Backdrop Modal */}
       <BMSMovieDetailModal
         movie={detailModalMovie}
+        userProfile={userProfile}
         onClose={() => setDetailModalMovie(null)}
         onProceedToBooking={(movie) => {
           setDetailModalMovie(null);
           handleSelectMovie(movie);
         }}
         onWatchTrailer={handleWatchTrailer}
+        onRequireAuth={() => setIsAuthModalOpen(true)}
       />
 
       {/* 3. Trailer Video Player Modal */}

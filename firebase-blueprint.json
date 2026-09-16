@@ -67,6 +67,28 @@
         "addedAt": { "type": "string" }
       },
       "required": ["id", "movieId", "movieTitle"]
+    },
+    "MovieReview": {
+      "title": "Movie Review",
+      "description": "User reviews and star ratings for movies",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "movieId": { "type": "string" },
+        "movieTitle": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewText": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "likesCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "movieId", "userId", "userName", "rating", "reviewText"]
     }
   },
   "firestore": {
@@ -81,6 +103,10 @@
     "users/{userId}/watchlist/{watchlistId}": {
       "entity": "WatchlistItem",
       "description": "User saved/interested movies"
+    },
+    "movies/{movieId}/reviews/{reviewId}": {
+      "entity": "MovieReview",
+      "description": "Public movie reviews and user star ratings"
     }
   }
 }

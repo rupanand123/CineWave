@@ -22,7 +22,9 @@ import {
   onSnapshot,
   deleteDoc,
   serverTimestamp,
-  updateDoc
+  updateDoc,
+  increment,
+  getDocs
 } from 'firebase/firestore';
 import { BookingTicketRecord } from '../data/bmsData';
 
@@ -458,4 +460,152 @@ export function clearStoredUserProfile(): void {
     localStorage.removeItem('bms_active_user_profile');
   } catch (e) {}
 }
+
+// 9. Movie Reviews & Star Rating Engine with Firestore Persistence
+export interface MovieReview {
+  id: string;
+  movieId: string;
+  movieTitle: string;
+  userId: string;
+  userName: string;
+  userPhoto?: string | null;
+  rating: number; // 1 - 10 (or 0.5 - 5 stars)
+  reviewText: string;
+  tags: string[];
+  likesCount: number;
+  isVerifiedBooking?: boolean;
+  createdAt: string;
+}
+
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+export interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+  };
+}
+
+export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+    },
+    operationType,
+    path
+  };
+  console.error('Firestore Error:', JSON.stringify(errInfo));
+}
+
+/**
+ * Save user movie review and star rating to Firestore
+ */
+export async function saveMovieReviewToFirestore(
+  reviewData: Omit<MovieReview, 'id' | 'createdAt' | 'likesCount'> & { id?: string }
+): Promise<MovieReview> {
+  const reviewId = reviewData.id || `rev_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const nowStr = new Date().toISOString();
+
+  const newReview: MovieReview = {
+    ...reviewData,
+    id: reviewId,
+    likesCount: 0,
+    createdAt: nowStr,
+  };
+
+  const path = `movies/${reviewData.movieId}/reviews/${reviewId}`;
+  try {
+    const reviewRef = doc(db, 'movies', reviewData.movieId, 'reviews', reviewId);
+    await setDoc(reviewRef, {
+      ...newReview,
+      serverTime: serverTimestamp()
+    });
+    return newReview;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, path);
+    // Return the created review so the UI updates gracefully offline
+    return newReview;
+  }
+}
+
+/**
+ * Real-time listener for movie reviews from Firestore
+ */
+export function subscribeToMovieReviews(
+  movieId: string,
+  onUpdate: (reviews: MovieReview[]) => void
+): () => void {
+  if (!movieId) return () => {};
+
+  const path = `movies/${movieId}/reviews`;
+  const reviewsRef = collection(db, 'movies', movieId, 'reviews');
+  const q = query(reviewsRef);
+
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const results: MovieReview[] = [];
+      snapshot.forEach((docSnap) => {
+        results.push(docSnap.data() as MovieReview);
+      });
+      // Sort newest first
+      results.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      onUpdate(results);
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+  );
+}
+
+/**
+ * Like / Upvote a movie review in Firestore
+ */
+export async function likeMovieReviewInFirestore(
+  movieId: string,
+  reviewId: string
+): Promise<void> {
+  const path = `movies/${movieId}/reviews/${reviewId}`;
+  try {
+    const reviewRef = doc(db, 'movies', movieId, 'reviews', reviewId);
+    await updateDoc(reviewRef, {
+      likesCount: increment(1)
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+/**
+ * Delete a user review from Firestore
+ */
+export async function deleteMovieReviewFromFirestore(
+  movieId: string,
+  reviewId: string
+): Promise<void> {
+  const path = `movies/${movieId}/reviews/${reviewId}`;
+  try {
+    const reviewRef = doc(db, 'movies', movieId, 'reviews', reviewId);
+    await deleteDoc(reviewRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
+  }
+}
+
 

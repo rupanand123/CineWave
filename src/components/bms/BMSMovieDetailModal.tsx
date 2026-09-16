@@ -1,19 +1,25 @@
 import React from 'react';
 import { BMSMovie, BMS_FALLBACK_BACKDROP, BMS_FALLBACK_POSTER } from '../../data/bmsData';
-import { X, Star, Clock, Ticket, Play, Users, Film, CheckCircle2 } from 'lucide-react';
+import { BMSUserProfile } from '../../lib/firebase';
+import { BMSMovieReviewsSection } from './BMSMovieReviewsSection';
+import { X, Star, Clock, Ticket, Play, Users, Film } from 'lucide-react';
 
 interface BMSMovieDetailModalProps {
   movie: BMSMovie | null;
+  userProfile?: BMSUserProfile | null;
   onClose: () => void;
   onProceedToBooking: (movie: BMSMovie) => void;
   onWatchTrailer: (movie: BMSMovie) => void;
+  onRequireAuth?: () => void;
 }
 
 export function BMSMovieDetailModal({
   movie,
+  userProfile = null,
   onClose,
   onProceedToBooking,
-  onWatchTrailer
+  onWatchTrailer,
+  onRequireAuth
 }: BMSMovieDetailModalProps) {
   if (!movie) return null;
 
@@ -177,6 +183,13 @@ export function BMSMovieDetailModal({
               ))}
             </div>
           </div>
+
+          {/* User Reviews and Star Ratings Component (Firestore-backed) */}
+          <BMSMovieReviewsSection
+            movie={movie}
+            userProfile={userProfile}
+            onRequireAuth={onRequireAuth}
+          />
 
           {/* Action Footer */}
           <div className="border-t border-slate-800 pt-5 flex flex-col sm:flex-row items-center justify-between gap-4">

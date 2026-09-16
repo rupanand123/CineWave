@@ -1410,10 +1410,17 @@ export function getCinemaVenuesForCity(city: CityData): CinemaVenue[] {
 
 export const SAMPLE_CINEMA_VENUES: CinemaVenue[] = getCinemaVenuesForCity(CITIES_LIST[0]);
 
+const getTodayShowDateString = () => {
+  const now = new Date();
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `Tonight • ${days[now.getDay()]}, ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+};
+
 export const INITIAL_USER_BOOKINGS: BookingTicketRecord[] = [
   {
     bookingId: 'BMS-8921-9481',
-    bookingTime: '2026-08-30 18:42',
+    bookingTime: new Date().toISOString().replace('T', ' ').slice(0, 16),
     movieTitle: 'Pushpa 2: The Rule',
     moviePoster: 'https://upload.wikimedia.org/wikipedia/en/1/11/Pushpa_2-_The_Rule.jpg',
     movieLanguage: 'Telugu',
@@ -1421,7 +1428,7 @@ export const INITIAL_USER_BOOKINGS: BookingTicketRecord[] = [
     cinemaName: 'PVR INOX: Mumbai Grand IMAX Laser',
     cinemaLocation: 'Central Galleria, Mumbai',
     audiNumber: 'Audi 1 (IMAX Laser)',
-    showDate: 'Tonight • Sun, 31 Aug',
+    showDate: getTodayShowDateString(),
     showTime: '08:45 PM',
     seats: ['F7', 'F8'],
     seatTier: 'PRIME / CLUB',
